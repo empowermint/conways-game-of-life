@@ -29,8 +29,6 @@ class conwayGrid {
     domStartOverButton.addEventListener('click', () => {
       this.startOver();
     });
-
-    this.play();
   }
 
   createNewGrid(startTruePercent) {
