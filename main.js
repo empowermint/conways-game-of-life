@@ -4,6 +4,10 @@ const domConwayGrid = document.getElementById('conwaygrid');
 const domStartButton = document.getElementById('start');
 const domPauseButton = document.getElementById('pause');
 const domStartOverButton = document.getElementById('startover');
+const domGoButton = document.getElementById('go');
+const domWidthField = document.getElementById('width');
+const domHeightField = document.getElementById('height');
+const domPercentageField = document.getElementById('percentage');
 
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
@@ -26,7 +30,7 @@ class conwayGrid {
       this.startOver();
     });
 
-    //this.play();
+    this.play();
   }
 
   createNewGrid(startTruePercent) {
@@ -141,4 +145,11 @@ class conwayGrid {
   }
 }
 
-const playGrid = new conwayGrid(10, 10, 15);
+// Initialision Form:
+
+domGoButton.addEventListener('click', () => {
+  const gridWidth = domWidthField.value;
+  const gridHeight = domHeightField.value;
+  const startTruePercent = domPercentageField.value;
+  const playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
+});
