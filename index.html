@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Page Title</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-  <script src='main.js' defer></script>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="main.js" defer></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Conway's Game of Life</h1>
+      <p>This is a disco-inspired web implementation of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" alt="Wikipedia">Conway's Game of Life</a> using vanilla JavaScript.</p>
+    </header>
+    <main>
+      <div id="startform">
+        <form>
+          <label>Width:</label>
+          <input type="number" name="width" value="10" />
+          <label>Height:</label>
+          <input type="number" name="height" value="10" />
+          <label>Starting Aliveness:</label>
+          <span><input type="number" name="percentage" min="0" max="100" value="20" /> %</span>
+          <button id="go">Go!</button>
+        </form>
+      </div>
+    </main>
+  </body>
 </html>
