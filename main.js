@@ -9,6 +9,8 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
+const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
+
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
@@ -108,12 +110,15 @@ class conwayGrid {
     let cellCount = 0;
     for (let y = 0; y < this.gridHeight; y++) {
       for (let x = 0; x < this.gridWidth; x++) {
-        const cell = `cb_${cellCount}`;
+        const cell = document.getElementById(`cb_${cellCount}`);
         if (gridArray[y][x] === true) {
-          document.getElementById(cell).checked = true;
+          cell.checked = true;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          cell.style.background = 'var(--' + color + ')';
         } else {
-          document.getElementById(cell).checked = false;
-        }
+          cell.checked = false;
+          cell.style.background = 'var(--white)';
+        } // TODO: Stop this overriding the native CSS :selected state...
         cellCount++;
       }
     }

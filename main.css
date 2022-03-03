@@ -57,7 +57,7 @@ a:active {
 body {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(hsl(0 0% 3%), hsl(0 0% 9%));
+  background: linear-gradient(150deg, hsl(0 0% 3%), hsl(0 0% 12%));
   min-height: 100vh;
   padding: 5vmin;
 }
@@ -112,6 +112,14 @@ button:hover {
 
 #grid-area {
   display: none;
+  --white: radial-gradient(hsl(0 0% 99%), hsl(0 0% 86%));
+  --magenta: radial-gradient(hsl(330 90% 70%), hsl(330 90% 50%));
+  --green: radial-gradient(hsl(150 75% 80%), hsl(150 75% 50%));
+  --purple: radial-gradient(hsl(280 95% 80%), hsl(280 95% 40%));
+  --darkblue: radial-gradient(hsl(245 75% 70%), hsl(245 75% 50%));
+  --violet: radial-gradient(hsl(295 90% 80%), hsl(295 90% 40%));
+  --cyan: radial-gradient(hsl(200 80% 90%), hsl(200 80% 70%));
+  --yellow: radial-gradient(hsl(40 100% 90%), hsl(40 100% 70%));
 }
 
 .conwaygrid {
@@ -126,10 +134,10 @@ input[type="checkbox"] {
   min-width: 1rem;
   aspect-ratio: 1;
   cursor: pointer;
-  background: white;
+  background: var(--white);
+  transition: ease-in-out .5s;
 }
 
 input[type="checkbox"]:checked {
-  background: pink;
-      /* TODO: make the colours change dynamically like a disco dancefloor */
+  background: var(--yellow);
 }
