@@ -1,6 +1,5 @@
 const domStartForm = document.getElementById('startform');
 const domGridArea = document.getElementById('grid-area');
-const domConwayGrid = document.getElementById('conwaygrid');
 const domStartButton = document.getElementById('start');
 const domPauseButton = document.getElementById('pause');
 const domStartOverButton = document.getElementById('startover');
@@ -9,12 +8,14 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
+let domConwayGrid = document.getElementById('conwaygrid');
+
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = this.createNewGrid(startTruePercent);
+    this.currentValues = this.createNewGrid(startTruePercent); // TODO: Replace currentValues with readings from the actual field
     this.runState = true;
 
     this.renderGrid();
@@ -30,7 +31,7 @@ class conwayGrid {
       this.startOver();
     });
 
-    this.play();
+    //this.play();
   }
 
   createNewGrid(startTruePercent) {
@@ -51,10 +52,10 @@ class conwayGrid {
     domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
-      const cell = document.createElement('input')
+      const cell = document.createElement('input');
       cell.setAttribute('type', 'checkbox');
       cell.setAttribute('id', cellId);
-      cell.style.width = 'calc(65vmin / ' + this.gridWidth + ')';
+      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')';
       domConwayGrid.appendChild(cell);
     }
   }
@@ -88,6 +89,7 @@ class conwayGrid {
       neighbourCells[i] === true && neighbourCellsCount++;
     } 
 
+    // The rules of Life:
     if (neighbourCellsCount === 3) {
       return true;
     }
@@ -129,7 +131,7 @@ class conwayGrid {
       this.updateGrid(nextGrid);
       this.currentValues = nextGrid;
       if (this.runState === true) this.play(); // TODO: Find a more elegant loop to use
-    }, 500); 
+    }, 333); 
   }
 
   pause() {
@@ -142,12 +144,18 @@ class conwayGrid {
   startOver() {
     domGridArea.style.display = 'none';
     domStartForm.style.display = 'unset';
+    domConwayGrid.remove();
+    const dcg = document.createElement('form');
+    dcg.setAttribute('id', 'conwaygrid');
+    domGridArea.appendChild(dcg);
+    domConwayGrid = document.getElementById('conwaygrid');
   }
 }
 
 // Initialision Form:
 
-domGoButton.addEventListener('click', () => {
+domStartForm.addEventListener('submit', (e) => {
+  e.preventDefault();
   const gridWidth = domWidthField.value;
   const gridHeight = domHeightField.value;
   const startTruePercent = domPercentageField.value;
