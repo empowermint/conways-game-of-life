@@ -1,5 +1,9 @@
 const domStartForm = document.getElementById('startform');
+const domGridArea = document.getElementById('grid-area');
 const domConwayGrid = document.getElementById('conwaygrid');
+const domStartButton = document.getElementById('start');
+const domPauseButton = document.getElementById('pause');
+const domStartOverButton = document.getElementById('startover');
 
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
@@ -11,10 +15,22 @@ class conwayGrid {
 
     this.renderGrid();
     this.updateGrid(this.currentValues);
+
+    domStartButton.addEventListener('click', () => {
+      this.play();
+    });
+    domPauseButton.addEventListener('click', () => {
+      this.pause();
+    });
+    domStartOverButton.addEventListener('click', () => {
+      this.startOver();
+    });
+
     //this.play();
   }
 
   createNewGrid(startTruePercent) {
+    domGridArea.style.display = 'unset';
     const returnGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
@@ -27,7 +43,7 @@ class conwayGrid {
   }
 
   renderGrid() {
-    domStartForm.style.display = "none";
+    domStartForm.style.display = 'none';
     domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
@@ -67,6 +83,7 @@ class conwayGrid {
     for (let i = 0; i < 8; i++) {
       neighbourCells[i] === true && neighbourCellsCount++;
     } 
+
     if (neighbourCellsCount === 3) {
       return true;
     }
@@ -100,14 +117,28 @@ class conwayGrid {
   }
 
   play() {
+    domStartButton.style.display = 'none';
+    domStartOverButton.style.display = 'none';
+    domPauseButton.style.display = 'unset';
     setTimeout(() => {
       const nextGrid = this.calcNextGrid();
       this.updateGrid(nextGrid);
+      this.currentValues = nextGrid;
+      if (this.runState === true) this.play(); // TODO: Find a more elegant loop to use
+    }, 500); 
+  }
 
-      if (this.runState === true) this.play();
-      // console.log(this.currentValues);
-    }, 1000); 
+  pause() {
+    this.runState = false;
+    domStartButton.style.display = 'unset';
+    domStartOverButton.style.display = 'unset';
+    domPauseButton.style.display = 'none';
+  }
+
+  startOver() {
+    domGridArea.style.display = 'none';
+    domStartForm.style.display = 'unset';
   }
 }
 
-const playGrid = new conwayGrid(5, 5, 25);
+const playGrid = new conwayGrid(10, 10, 15);

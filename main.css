@@ -94,10 +94,13 @@ button {
   font-weight: 900;
   width: 10ch;
   border-radius: .3rem;
-  margin-top: 5vh;
   transition: ease-out 0.2s;
   grid-column: 1 / -1;
   place-self: center;
+}
+
+.startform button {
+  margin-top: 5vh;
 }
 
 button:hover {
@@ -106,6 +109,10 @@ button:hover {
 }
 
 /* Conway Grid */
+
+#gridarea {
+  display: none;
+}
 
 .conwaygrid {
   width: fit-content;
