@@ -4,10 +4,13 @@ class conwayGrid {
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
     this.currentValues = this.createNewGrid(startTruePercent);
+    this.runState = true;
+
+    this.renderGrid();
+    this.play();
   }
 
   createNewGrid(startTruePercent) {
-    // for initial setup, creates array of arrays to size of grid specified, with startTruePercent true values
     const returnGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
@@ -19,12 +22,8 @@ class conwayGrid {
     return returnGrid;
   }
 
-  renderNewGrid() {
+  renderGrid() {
     // renders a new grid into the DOM
-  }
-
-  renderPausePlay() {
-    // renders a play/pause button into the DOM
   }
 
   calcNextGrid() {
@@ -74,21 +73,21 @@ class conwayGrid {
     }
   }
 
-  renderGrid() {
-    // renders NextGridArray
+  updateGrid() {
+    // renders a grid array
   }
 
-  renderCell() {
+  updateCell() {
     // renders an individual cell 
   }
 
-  run() {
-    // allows play and pause of grid
-  }
-
-  onPause() {
-    // during pause, allows users to change cell states 
+  play() {
+    setTimeout(() => {
+      this.updateGrid(this.calcNextGrid);
+      if (this.runState === true) this.play();
+      // console.log(this.currentValues);
+    }, 1000); 
   }
 }
 
-const playGrid = new conwayGrid(10,10,50);
+const playGrid = new conwayGrid(10, 10, 25);
