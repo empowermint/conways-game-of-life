@@ -110,17 +110,13 @@ button:hover {
 .conwaygrid {
   width: fit-content;
   display: grid;
-  grid-template: repeat(3, 1fr) / repeat(4, 1fr); 
-    /* TODO: use user's set width and height instead */
+  grid-template-rows: auto; 
   gap: 5px;
   margin: 1rem auto;
 }
 
 input[type="checkbox"] {
   min-width: 1rem;
-  max-width: 6rem;
-  width: calc(75vmin / 5);
-    /* TODO: use user's set width instead */
   aspect-ratio: 1;
   cursor: pointer;
   background: white;
@@ -128,4 +124,5 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
   background: pink;
+      /* TODO: make the colours change dynamically like a disco dancefloor */
 }

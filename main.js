@@ -1,3 +1,6 @@
+const startForm = document.getElementById('startform');
+const DOMconwayGrid = document.getElementById('conwaygrid');
+
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
@@ -7,7 +10,8 @@ class conwayGrid {
     this.runState = true;
 
     this.renderGrid();
-    this.play();
+    this.updateGrid(this.currentValues);
+    //this.play();
   }
 
   createNewGrid(startTruePercent) {
@@ -23,11 +27,19 @@ class conwayGrid {
   }
 
   renderGrid() {
-    // renders a new grid into the DOM
+    startForm.style.display = "none";
+    DOMconwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
+    for (let i = 0; i < this.gridCellCount; i++) {
+      const cellId = 'cb_' + i;
+      const cell = document.createElement('input')
+      cell.setAttribute('type', 'checkbox');
+      cell.setAttribute('id', cellId);
+      cell.style.width = 'calc(65vmin / ' + this.gridWidth + ')';
+      DOMconwayGrid.appendChild(cell);
+    }
   }
 
   calcNextGrid() {
-    // applies the game rules to derive the next grid state by iterating through cells, storing them in a return array, NextGrid
     const nextGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
@@ -73,21 +85,30 @@ class conwayGrid {
     }
   }
 
-  updateGrid() {
-    // renders a grid array
-  }
-
-  updateCell() {
-    // renders an individual cell 
+  updateGrid(gridArray) {
+    let cellCount = 0;
+    for (let y = 0; y < this.gridHeight; y++) {
+      for (let x = 0; x < this.gridWidth; x++) {
+        const cell = `cb_${cellCount}`;
+        if (gridArray[y][x] === true) {
+          document.getElementById(cell).checked = true;
+        } else {
+          document.getElementById(cell).checked = false;
+        }
+        cellCount++;
+      }
+    }
   }
 
   play() {
     setTimeout(() => {
-      this.updateGrid(this.calcNextGrid);
+      const nextGrid = this.calcNextGrid();
+      this.updateGrid(nextGrid);
+
       if (this.runState === true) this.play();
       // console.log(this.currentValues);
     }, 1000); 
   }
 }
 
-const playGrid = new conwayGrid(10, 10, 25);
+const playGrid = new conwayGrid(5, 5, 25);
