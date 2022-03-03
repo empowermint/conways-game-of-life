@@ -9,10 +9,10 @@ class conwayGrid {
   createNewGrid(startTruePercent) {
     // for initial setup, creates array of arrays to size of grid specified, with startTruePercent true values
     const returnGrid = [];
-    for (let i = 0; i < this.gridHeight; i++) {
+    for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
-      for (let i = 0; i < this.gridWidth; i++) {
-        gridRow.push(Math.random() <= startTruePercent / 100 ? true : false);
+      for (let x = 0; x < this.gridWidth; x++) {
+        gridRow.push(Math.random() <= (startTruePercent / 100) ? true : false);
       }
       returnGrid.push(gridRow);
     }
@@ -28,11 +28,50 @@ class conwayGrid {
   }
 
   calcNextGrid() {
-    // applies the game rules to derive the next grid state by iterating through cells, storing them in NextGrid
+    // applies the game rules to derive the next grid state by iterating through cells, storing them in a return array, NextGrid
+    const nextGrid = [];
+    for (let y = 0; y < this.gridHeight; y++) {
+      const gridRow = [];
+      for (let x = 0; x < this.gridWidth; x++) {
+        gridRow.push(this.checkCell(x, y));
+      }
+      nextGrid.push(gridRow);
+    }
+    return nextGrid;
   }
 
-  checkCell(cell) {
+  checkCell(x, y) {
     // checks a given cell againt the rules of the game
+    const currentCell = this.currentValues[y][x];
+    let neighbourCellsCount = 0;
+    const neighbourCells = [
+      this.lookupCell(y-1, x-1),
+      this.lookupCell(y, x-1),
+      this.lookupCell(y+1, x-1),
+      this.lookupCell(y-1, x),
+      this.lookupCell(y+1, x),
+      this.lookupCell(y-1, x+1),
+      this.lookupCell(y, x+1),
+      this.lookupCell(y+1, x+1)
+    ]
+    for (let i = 0; i < 8; i++) {
+      neighbourCells[i] === true && neighbourCellsCount++;
+    } 
+    if (neighbourCellsCount === 3) {
+      return true;
+    }
+    if (currentCell === true && neighbourCellsCount === 2) {
+      return true;
+    }
+    return false;
+  }
+
+  lookupCell(x, y) {
+    try {
+      return this.currentValues[y][x];
+    } catch(e) {
+      return false;
+    }
   }
 
   renderGrid() {
@@ -52,5 +91,4 @@ class conwayGrid {
   }
 }
 
-const renderedGrid = new conwayGrid(10,10,10);
-console.log(renderedGrid.currentValues);
+const playGrid = new conwayGrid(10,10,50);
