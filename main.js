@@ -1,5 +1,6 @@
 const domStartForm = document.getElementById('startform');
 const domGridArea = document.getElementById('grid-area');
+const domConwayGrid = document.getElementById('conwaygrid');
 const domStartButton = document.getElementById('start');
 const domPauseButton = document.getElementById('pause');
 const domStartOverButton = document.getElementById('startover');
@@ -8,14 +9,12 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
-let domConwayGrid = document.getElementById('conwaygrid');
-
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = this.createNewGrid(startTruePercent); // TODO: Replace currentValues with readings from the actual field
+    this.currentValues = this.createNewGrid(startTruePercent); // TODO: Replace currentValues with readings from the DOM - thus allowing user to manually toggle life/death
     this.runState = true;
 
     this.renderGrid();
@@ -31,7 +30,7 @@ class conwayGrid {
       this.startOver();
     });
 
-    //this.play();
+    this.play();
   }
 
   createNewGrid(startTruePercent) {
@@ -142,13 +141,10 @@ class conwayGrid {
   }
 
   startOver() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((item) => item.remove());
     domGridArea.style.display = 'none';
     domStartForm.style.display = 'unset';
-    domConwayGrid.remove();
-    const dcg = document.createElement('form');
-    dcg.setAttribute('id', 'conwaygrid');
-    domGridArea.appendChild(dcg);
-    domConwayGrid = document.getElementById('conwaygrid');
   }
 }
 
@@ -159,5 +155,5 @@ domStartForm.addEventListener('submit', (e) => {
   const gridWidth = domWidthField.value;
   const gridHeight = domHeightField.value;
   const startTruePercent = domPercentageField.value;
-  const playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
+  let playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
 });
