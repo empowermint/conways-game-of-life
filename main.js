@@ -1,17 +1,30 @@
 class conwayGrid {
-  constructor(gridWidth, gridHeight) {
+  constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = createNewGridArray();
+    this.currentValues = this.createNewGrid(startTruePercent);
   }
 
-  createNewGrid() {
-    // for initial setup, creates array of arrays to size of grid specified
+  createNewGrid(startTruePercent) {
+    // for initial setup, creates array of arrays to size of grid specified, with startTruePercent true values
+    const returnGrid = [];
+    for (let i = 0; i < this.gridHeight; i++) {
+      const gridRow = [];
+      for (let i = 0; i < this.gridWidth; i++) {
+        gridRow.push(Math.random() <= startTruePercent / 100 ? true : false);
+      }
+      returnGrid.push(gridRow);
+    }
+    return returnGrid;
   }
 
   renderNewGrid() {
-    // renders a new grid and play/pause button into the DOM
+    // renders a new grid into the DOM
+  }
+
+  renderPausePlay() {
+    // renders a play/pause button into the DOM
   }
 
   calcNextGrid() {
@@ -40,3 +53,4 @@ class conwayGrid {
 }
 
 const renderedGrid = new conwayGrid(10,10,10);
+console.log(renderedGrid.currentValues);
