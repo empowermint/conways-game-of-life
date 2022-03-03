@@ -71,7 +71,7 @@ main {
 
 /* Start Form */
 
-form {
+.startform {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -83,7 +83,7 @@ label {
   place-self: end;
 }
 
-input {
+input[type="number"] {
   border: solid white 1px;
   width: 10ch;
 }
@@ -103,4 +103,29 @@ button {
 button:hover {
   background: var(--highlight);
   cursor: pointer;
+}
+
+/* Conway Grid */
+
+.conwaygrid {
+  width: fit-content;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(4, 1fr); 
+    /* TODO: use user's set width and height instead */
+  gap: 5px;
+  margin: 1rem auto;
+}
+
+input[type="checkbox"] {
+  min-width: 1rem;
+  max-width: 6rem;
+  width: calc(75vmin / 5);
+    /* TODO: use user's set width instead */
+  aspect-ratio: 1;
+  cursor: pointer;
+  background: white;
+}
+
+input[type="checkbox"]:checked {
+  background: pink;
 }
