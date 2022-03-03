@@ -1,5 +1,5 @@
-const startForm = document.getElementById('startform');
-const DOMconwayGrid = document.getElementById('conwaygrid');
+const domStartForm = document.getElementById('startform');
+const domConwayGrid = document.getElementById('conwaygrid');
 
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
@@ -27,15 +27,15 @@ class conwayGrid {
   }
 
   renderGrid() {
-    startForm.style.display = "none";
-    DOMconwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
+    domStartForm.style.display = "none";
+    domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
       const cell = document.createElement('input')
       cell.setAttribute('type', 'checkbox');
       cell.setAttribute('id', cellId);
       cell.style.width = 'calc(65vmin / ' + this.gridWidth + ')';
-      DOMconwayGrid.appendChild(cell);
+      domConwayGrid.appendChild(cell);
     }
   }
 
@@ -52,7 +52,6 @@ class conwayGrid {
   }
 
   checkCell(x, y) {
-    // checks a given cell againt the rules of the game
     const currentCell = this.currentValues[y][x];
     let neighbourCellsCount = 0;
     const neighbourCells = [
