@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@400&display=swap');
 
 :root {
   --primary: white;
@@ -32,7 +32,13 @@
 
 h1 {
   font-size: calc(1rem + 5vw);
-  font-weight: 900;
+  width: 9ch;
+  margin: auto;
+  font-family: Monoton, sans-serif;
+  color: rgba(0 0 0 / 0);
+  background: radial-gradient(circle, hsl(330 90% 50%), hsl(295 90% 40%), hsl(280 95% 40%), hsl(245 75% 50%));
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 a,
@@ -120,6 +126,9 @@ button:hover {
   --violet: radial-gradient(hsl(295 90% 80%), hsl(295 90% 40%));
   --cyan: radial-gradient(hsl(200 80% 90%), hsl(200 80% 70%));
   --yellow: radial-gradient(hsl(40 100% 90%), hsl(40 100% 70%));
+  perspective: 450px;
+  perspective-origin: 50% 50%;
+  transform: translateY(-5em);
 }
 
 .conwaygrid {
@@ -128,6 +137,8 @@ button:hover {
   grid-template-rows: auto; 
   gap: 5px;
   margin: 1rem auto;
+  transform: rotateX(50deg);
+  box-shadow: 0 10px 15px hsl(245 100% 25%);
 }
 
 input[type="checkbox"] {
