@@ -34,7 +34,7 @@ Having each cell light up in a different colour is an essential part of my imple
 
 ### User input
 
-The Python implementation does not have any user customisation. Mine lets the user choose their own grid size and set the chance of each cell being alive at the start of the game, but also 
+The Python implementation does not have any user customisation. Mine lets the user choose their own grid size and set the chance of each cell being alive at the start of the game.
 
 ### Large grid sizes
 
