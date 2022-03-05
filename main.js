@@ -9,8 +9,6 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
-const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
-
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
@@ -75,7 +73,7 @@ class conwayGrid {
     const currentCell = this.currentValues[y][x];
     let neighbourCellsCount = 0;
     const neighbourCells = [
-      this.lookupCell(y-1, x-1),
+      this.lookupCell(y-1, x-1), // TODO: Swap X and Y for this whole array!
       this.lookupCell(y, x-1),
       this.lookupCell(y+1, x-1),
       this.lookupCell(y-1, x),
@@ -111,16 +109,22 @@ class conwayGrid {
     for (let y = 0; y < this.gridHeight; y++) {
       for (let x = 0; x < this.gridWidth; x++) {
         const cell = document.getElementById(`cb_${cellCount}`);
+        this.changeCellColor(cell);
         if (gridArray[y][x] === true) {
           cell.checked = true;
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          cell.style.background = 'var(--' + color + ')';
         } else {
           cell.checked = false;
-          cell.style.background = 'var(--white)';
-        } // TODO: Stop this overriding the native CSS :selected state...
+        }
         cellCount++;
       }
+    }
+  }
+
+  changeCellColor(cell) {
+    const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
+    const newColor = colors[Math.floor(Math.random() * colors.length)];
+    for (let i = 0; i < colors.length; i++) {
+      cell.className = newColor;
     }
   }
 
