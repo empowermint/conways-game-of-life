@@ -30,7 +30,9 @@ I decided to apply the rules to the edges as though there were permanatly dead c
 
 ### Flashing colours
 
-Having each cell light up in a different colour is an essential part of my implementation because that's what makes the grid look like a dancefloor!
+Having each cell light up in a different colour is an essential part of my implementation because that's what makes the grid look like a dancefloor! I initially approached this by having the JS reassign the `style.background` of each cell directly, but this stopped the native checkbox behaviour from working normally because the JS styles were overriding the `:checked` CSS psudoproperty.
+
+I did toy with re-writing the click to turn on/off functionality of the checkboxes using JS, but in the end found a more elegant solution: each cell colour is defined as a its own CSS class, which can then be re-assigned easily using JS. The moral of the story? Native JS/CSS expect you to keep all of the design in your CSS - and it's much easier if you go along with that in the first place!
 
 ### User input
 

@@ -155,6 +155,34 @@ input[type="checkbox"] {
   transition: ease-in-out .5s;
 }
 
-input[type="checkbox"]:checked {
+/* input[type="checkbox"]:checked {
+  background: var(--highlight);
+} */
+
+.magenta:checked {
+  background: var(--magenta);
+}
+
+.green:checked {
+  background: var(--green);
+}
+
+.purple:checked {
+  background: var(--purple);
+}
+
+.darkblue:checked {
+  background: var(--darkblue);
+}
+
+.violet:checked {
+  background: var(--violet);
+}
+
+.cyan:checked {
+  background: var(--cyan);
+}
+
+.yellow:checked {
   background: var(--yellow);
 }
