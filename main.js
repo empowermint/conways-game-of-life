@@ -16,7 +16,7 @@ class conwayGrid {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = this.createNewGrid(startTruePercent); // TODO: Replace currentValues with readings from the DOM - thus allowing user to manually toggle life/death
+    this.currentValues = this.createNewGrid(startTruePercent);
     this.runState = true;
 
     this.renderGrid();
@@ -59,7 +59,23 @@ class conwayGrid {
     }
   }
 
-  calcNextGrid() {
+  readCurrentGrid() {
+    const outputGrid = [];
+    let cellNum = 0;
+    for (let y = 0; y < this.gridHeight; y++) {
+      const gridRow = [];
+      for (let x = 0; x < this.gridWidth; x++) {
+        const cell = document.getElementById('cb_' + cellNum);
+        gridRow.push(cell.checked);
+        cellNum++;
+      }
+      outputGrid.push(gridRow);
+    }
+    this.currentValues = outputGrid; // TODO: Remove? (See line 78)
+    return outputGrid;
+  }
+
+  calcNextGrid() { // TODO: Find way to eliminate this.currentValues altogether and just pass the current array around? This would increase modularity quite a bit.
     const nextGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
@@ -118,11 +134,13 @@ class conwayGrid {
     domStartButton.style.display = 'none';
     domStartOverButton.style.display = 'none';
     domPauseButton.style.display = 'unset';
+    // TODO: Move these initial setup bits elsewhere so they're not being re-updated with every iteration
     setTimeout(() => {
-      const nextGrid = this.calcNextGrid();
+      this.readCurrentGrid(); // Updates this.currentValues
+      const nextGrid = this.calcNextGrid(this.currentValues);
       this.updateGrid(nextGrid);
-      this.currentValues = nextGrid;
-      if (this.runState === true) this.play(); // TODO: Find a more elegant loop to use
+
+      if (this.runState === true) this.play();
     }, 333); 
   }
 
@@ -142,7 +160,7 @@ class conwayGrid {
 }
 
 domStartForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Stop page refreshing
   const gridWidth = domWidthField.value;
   const gridHeight = domHeightField.value;
   const startTruePercent = domPercentageField.value;
