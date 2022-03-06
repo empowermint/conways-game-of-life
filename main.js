@@ -9,6 +9,8 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
+const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
+
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
@@ -45,14 +47,14 @@ class conwayGrid {
   }
 
   renderGrid() {
-    domStartForm.style.display = 'none';
+    domStartForm.style.display = 'none'; // TODO: Replace with hidden class (because more performant)
     domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
       const cell = document.createElement('input');
       cell.setAttribute('type', 'checkbox');
       cell.setAttribute('id', cellId);
-      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')';
+      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')'; // TODO: Try setting the width in the CSS, not here
       domConwayGrid.appendChild(cell);
     }
   }
@@ -69,11 +71,11 @@ class conwayGrid {
     return nextGrid;
   }
 
-  checkCell(x, y) {
+  checkCell(y, x) {
     const currentCell = this.currentValues[y][x];
     let neighbourCellsCount = 0;
     const neighbourCells = [
-      this.lookupCell(y-1, x-1), // TODO: Swap X and Y for this whole array!
+      this.lookupCell(y-1, x-1),
       this.lookupCell(y, x-1),
       this.lookupCell(y+1, x-1),
       this.lookupCell(y-1, x),
@@ -87,45 +89,29 @@ class conwayGrid {
     } 
 
     // The rules of Life:
-    if (neighbourCellsCount === 3) {
-      return true;
-    }
-    if (currentCell === true && neighbourCellsCount === 2) {
-      return true;
-    }
-    return false;
+    return neighbourCellsCount === 3 || (currentCell && neighbourCellsCount === 2);
   }
 
-  lookupCell(x, y) {
-    try {
-      return this.currentValues[y][x];
-    } catch(e) {
-      return false;
-    }
+  lookupCell(y, x) {
+    if (y < 0 || x < 0 || y >= this.gridHeight || x >= this.gridWidth) return false;
+    return this.currentValues[y][x];
   }
 
   updateGrid(gridArray) {
     let cellCount = 0;
-    for (let y = 0; y < this.gridHeight; y++) {
-      for (let x = 0; x < this.gridWidth; x++) {
+    for (let y = 0; y < this.gridWidth; y++) {
+      for (let x = 0; x < this.gridHeight; x++) {
         const cell = document.getElementById(`cb_${cellCount}`);
         this.changeCellColor(cell);
-        if (gridArray[y][x] === true) {
-          cell.checked = true;
-        } else {
-          cell.checked = false;
-        }
+        cell.checked = gridArray[y][x];
         cellCount++;
       }
     }
   }
 
   changeCellColor(cell) {
-    const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
     const newColor = colors[Math.floor(Math.random() * colors.length)];
-    for (let i = 0; i < colors.length; i++) {
-      cell.className = newColor;
-    }
+    cell.className = newColor;
   }
 
   play() {
@@ -154,8 +140,6 @@ class conwayGrid {
     domStartForm.style.display = 'unset';
   }
 }
-
-// Initialision Form:
 
 domStartForm.addEventListener('submit', (e) => {
   e.preventDefault();
