@@ -53,7 +53,7 @@ class conwayGrid {
       const cell = document.createElement('input');
       cell.setAttribute('type', 'checkbox');
       cell.setAttribute('id', cellId);
-      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')'; // TODO: Try setting the width in the CSS, not here
+      // cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')';
       domConwayGrid.appendChild(cell);
     }
   }
@@ -160,7 +160,7 @@ class conwayGrid {
   }
 }
 
-domStartForm.addEventListener('submit', (e) => {
+domGoButton.addEventListener('click', (e) => {
   e.preventDefault(); // Stop page refreshing
   const gridWidth = domWidthField.value;
   const gridHeight = domHeightField.value;

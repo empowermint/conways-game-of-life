@@ -11,7 +11,7 @@
   <body>
     <header>
       <h1>Conway's Game of Life</h1>
-      <p>This is a disco-inspired web implementation of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" alt="Wikipedia">Conway's Game of Life</a> using vanilla JavaScript.</p>
+      <p>A disco-inspired web implementation of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" alt="Wikipedia">Conway's Game of Life</a> using vanilla JavaScript.</p>
     </header>
     <main>
       <div id="startform">
@@ -24,11 +24,13 @@
           <span>
             <input type="number" id="percentage" name="percentage" min="0" max="100" value="33" /> %
           </span>
-          <button id="go">Go!</button>
         </form>
       </div>
       <div id="grid-area">
         <form class="conwaygrid" id="conwaygrid"></form>
+      </div>
+      <div id="control-area">
+        <button id="go">Go!</button>
         <button id="start">Start</button>
         <button id="pause">Pause</button>
         <button id="startover">Start Over</button>

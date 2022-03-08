@@ -11,6 +11,7 @@
   --violet: radial-gradient(hsl(295 90% 80%), hsl(295 90% 40%));
   --cyan: radial-gradient(hsl(200 80% 90%), hsl(200 80% 70%));
   --yellow: radial-gradient(hsl(40 100% 90%), hsl(40 100% 70%));
+  --base-margin: 5vmin;
 }
 
 /* Reset */
@@ -44,7 +45,7 @@ h1 {
   margin: auto;
   font-family: Monoton, sans-serif;
   color: rgba(0 0 0 / 0);
-  background: radial-gradient(circle, hsl(330 90% 50%),
+  background: radial-gradient(ellipse, hsl(330 90% 50%),
                                       hsl(295 90% 40%),
                                       hsl(280 95% 40%),
                                       hsl(245 75% 50%));
@@ -52,12 +53,19 @@ h1 {
   -webkit-background-clip: text;
 }
 
+p {
+  font-size: 1rem;
+}
+
+/* Base */
+
 a,
 a:link,
 a:visited {
   color: var(--highlight);
   text-decoration: underline;
   transition: ease-out .2s;
+  font-size: 1rem;
 }
 
 a:hover {
@@ -78,14 +86,24 @@ body {
   background: linear-gradient(150deg, hsl(0 0% 3%),
                                       hsl(0 0% 12%));
   min-height: 100vh;
-  padding: 5vmin;
+  padding: var(--base-margin);
+  gap: var(--base-margin);
 }
 
 main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: var(--base-margin);
+}
+
+#control-area {
+  height: min-content;
+  display: flex;
+  flex-flow: row wrap;
   justify-content: center;
+  gap: var(--base-margin);
 }
 
 /* Start Form */
@@ -93,7 +111,7 @@ main {
 .startform {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: var(--base-margin);
   justify-items: start;
 }
 
@@ -104,22 +122,18 @@ label {
 
 input[type="number"] {
   border: solid white 1px;
-  width: 10ch;
+  width: 7ch;
 }
 
 button {
   background: hsl(0 0% 90%);
   color: black;
   font-weight: 900;
-  width: 10ch;
+  width: 8ch;
   border-radius: .3rem;
   transition: ease-out 0.2s;
   grid-column: 1 / -1;
   place-self: center;
-}
-
-.startform button {
-  margin-top: 5vh;
 }
 
 button:hover {
@@ -130,34 +144,32 @@ button:hover {
 /* Conway Grid */
 
 #grid-area {
-  display: none;
+  max-width: 50rem;
   -webkit-perspective: 450px;
   perspective: 450px;
   -webkit-perspective-origin: 50% 50%;
   perspective-origin: 50% 50%; 
+  /* border: 5px solid coral; */
 }
 
 .conwaygrid {
-  width: fit-content;
   display: grid;
+  margin: 0 auto;
   grid-template-rows: auto; 
   gap: 5px;
-  margin: 1rem auto;
-  transform: rotateX(40deg) translateZ(5rem);
+  /* transform: rotateX(40deg) translateZ(5rem); */
   box-shadow: 0 10px 2px hsl(245 100% 25%);
 }
 
 input[type="checkbox"] {
-  min-width: 1rem;
+  /* min-width: 1rem; */
   aspect-ratio: 1;
   cursor: pointer;
   background: var(--white);
   transition: ease-in-out .5s;
 }
 
-/* input[type="checkbox"]:checked {
-  background: var(--highlight);
-} */
+/* Checkbox Colours */
 
 .magenta:checked {
   background: var(--magenta);
@@ -185,4 +197,10 @@ input[type="checkbox"] {
 
 .yellow:checked {
   background: var(--yellow);
+}
+
+/* JS Helper Classes */
+
+.hidden {
+  display: none;
 }
