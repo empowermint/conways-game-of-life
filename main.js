@@ -16,7 +16,7 @@ class conwayGrid {
     this.gridCellCount = gridWidth * gridHeight;
     this.currentGridArray = this.createNewGridArray(startTruePercent);
     this.runState = true;
-    this.cycleTime = 400;
+    this.cycleTime = 400; // in milliseconds
 
     this.renderGrid();
     this.updateGrid(this.currentGridArray);
@@ -137,13 +137,12 @@ class conwayGrid {
     this.runLoop();
   }
 
-  runLoop() {
-    setTimeout(() => {
+  async runLoop() {
+    while(this.runState === true) {
       this.readCurrentGrid();
-      const nextGrid = this.calcNextGrid(this.currentGridArray);
-      this.updateGrid(nextGrid);
-      if (this.runState === true) this.play(); // TODO: Explore if this could be a while loop
-    }, this.cycleTime); 
+      this.updateGrid(this.calcNextGrid(this.currentGridArray));
+      await new Promise(resolve => setTimeout(resolve, this.cycleTime));
+    }
   }
 
   pause() {
