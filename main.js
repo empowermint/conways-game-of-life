@@ -9,18 +9,17 @@ const domWidthField = document.getElementById('width');
 const domHeightField = document.getElementById('height');
 const domPercentageField = document.getElementById('percentage');
 
-const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
-
 class conwayGrid {
   constructor(gridWidth, gridHeight, startTruePercent) {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = this.createNewGrid(startTruePercent);
+    this.currentGridArray = this.createNewGridArray(startTruePercent);
     this.runState = true;
+    this.cycleTime = 400;
 
     this.renderGrid();
-    this.updateGrid(this.currentValues);
+    this.updateGrid(this.currentGridArray);
 
     domStartButton.addEventListener('click', () => {
       this.play();
@@ -33,7 +32,7 @@ class conwayGrid {
     });
   }
 
-  createNewGrid(startTruePercent) {
+  createNewGridArray(startTruePercent) {
     domGridArea.style.display = 'unset';
     const returnGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
@@ -47,7 +46,7 @@ class conwayGrid {
   }
 
   renderGrid() {
-    domStartForm.style.display = 'none'; // TODO: Replace with hidden class (because more performant)
+    domStartForm.style.display = 'none'; // TODO: Replace with .hidden class (because more performant)
     domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
@@ -71,16 +70,15 @@ class conwayGrid {
       }
       outputGrid.push(gridRow);
     }
-    this.currentValues = outputGrid; // TODO: Remove? (See line 78)
-    return outputGrid;
+    this.currentGridArray = outputGrid;
   }
 
-  calcNextGrid() { // TODO: Find way to eliminate this.currentValues altogether and just pass the current array around? This would increase modularity quite a bit.
+  calcNextGrid() {
     const nextGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
       for (let x = 0; x < this.gridWidth; x++) {
-        gridRow.push(this.checkCell(x, y));
+        gridRow.push(this.checkCell(y, x));
       }
       nextGrid.push(gridRow);
     }
@@ -88,7 +86,7 @@ class conwayGrid {
   }
 
   checkCell(y, x) {
-    const currentCell = this.currentValues[y][x];
+    const currentCell = this.currentGridArray[y][x];
     let neighbourCellsCount = 0;
     const neighbourCells = [
       this.lookupCell(y-1, x-1),
@@ -110,7 +108,7 @@ class conwayGrid {
 
   lookupCell(y, x) {
     if (y < 0 || x < 0 || y >= this.gridHeight || x >= this.gridWidth) return false;
-    return this.currentValues[y][x];
+    return this.currentGridArray[y][x];
   }
 
   updateGrid(gridArray) {
@@ -126,22 +124,26 @@ class conwayGrid {
   }
 
   changeCellColor(cell) {
+    const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow']
     const newColor = colors[Math.floor(Math.random() * colors.length)];
     cell.className = newColor;
   }
 
   play() {
-    domStartButton.style.display = 'none';
+    this.runState = true;
+    domStartButton.style.display = 'none'; // TODO: Replace with a .hidden class
     domStartOverButton.style.display = 'none';
     domPauseButton.style.display = 'unset';
-    // TODO: Move these initial setup bits elsewhere so they're not being re-updated with every iteration
-    setTimeout(() => {
-      this.readCurrentGrid(); // Updates this.currentValues
-      const nextGrid = this.calcNextGrid(this.currentValues);
-      this.updateGrid(nextGrid);
+    this.runLoop();
+  }
 
-      if (this.runState === true) this.play();
-    }, 333); 
+  runLoop() {
+    setTimeout(() => {
+      this.readCurrentGrid();
+      const nextGrid = this.calcNextGrid(this.currentGridArray);
+      this.updateGrid(nextGrid);
+      if (this.runState === true) this.play(); // TODO: Explore if this could be a while loop
+    }, this.cycleTime); 
   }
 
   pause() {
@@ -166,3 +168,5 @@ domStartForm.addEventListener('submit', (e) => {
   const startTruePercent = domPercentageField.value;
   let playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
 });
+
+// TODO: Find out why the play loop sometimes breaks when paused and restarted, and stop that from happening.
