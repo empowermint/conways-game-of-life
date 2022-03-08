@@ -167,5 +167,3 @@ domStartForm.addEventListener('submit', (e) => {
   const startTruePercent = domPercentageField.value;
   let playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
 });
-
-// TODO: Find out why the play loop sometimes breaks when paused and restarted, and stop that from happening.
