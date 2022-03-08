@@ -14,11 +14,12 @@ class conwayGrid {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.gridCellCount = gridWidth * gridHeight;
-    this.currentValues = this.createNewGrid(startTruePercent); // TODO: Replace currentValues with readings from the DOM - thus allowing user to manually toggle life/death
+    this.currentGridArray = this.createNewGridArray(startTruePercent);
     this.runState = true;
+    this.cycleTime = 400;
 
     this.renderGrid();
-    this.updateGrid(this.currentValues);
+    this.updateGrid(this.currentGridArray);
 
     domStartButton.addEventListener('click', () => {
       this.play();
@@ -31,7 +32,7 @@ class conwayGrid {
     });
   }
 
-  createNewGrid(startTruePercent) {
+  createNewGridArray(startTruePercent) {
     domGridArea.style.display = 'unset';
     const returnGrid = [];
     for (let y = 0; y < this.gridHeight; y++) {
@@ -45,16 +46,31 @@ class conwayGrid {
   }
 
   renderGrid() {
-    domStartForm.style.display = 'none';
+    domStartForm.style.display = 'none'; // TODO: Replace with .hidden class (because more performant)
     domConwayGrid.style.gridTemplateColumns = 'repeat(' + this.gridWidth + ', 1fr)';
     for (let i = 0; i < this.gridCellCount; i++) {
       const cellId = 'cb_' + i;
       const cell = document.createElement('input');
       cell.setAttribute('type', 'checkbox');
       cell.setAttribute('id', cellId);
-      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')';
+      cell.style.width = 'calc(50vmin / ' + this.gridWidth + ')'; // TODO: Try setting the width in the CSS, not here
       domConwayGrid.appendChild(cell);
     }
+  }
+
+  readCurrentGrid() {
+    const outputGrid = [];
+    let cellNum = 0;
+    for (let y = 0; y < this.gridHeight; y++) {
+      const gridRow = [];
+      for (let x = 0; x < this.gridWidth; x++) {
+        const cell = document.getElementById('cb_' + cellNum);
+        gridRow.push(cell.checked);
+        cellNum++;
+      }
+      outputGrid.push(gridRow);
+    }
+    this.currentGridArray = outputGrid;
   }
 
   calcNextGrid() {
@@ -62,18 +78,18 @@ class conwayGrid {
     for (let y = 0; y < this.gridHeight; y++) {
       const gridRow = [];
       for (let x = 0; x < this.gridWidth; x++) {
-        gridRow.push(this.checkCell(x, y));
+        gridRow.push(this.checkCell(y, x));
       }
       nextGrid.push(gridRow);
     }
     return nextGrid;
   }
 
-  checkCell(x, y) {
-    const currentCell = this.currentValues[y][x];
+  checkCell(y, x) {
+    const currentCell = this.currentGridArray[y][x];
     let neighbourCellsCount = 0;
     const neighbourCells = [
-      this.lookupCell(y-1, x-1), // TODO: Swap X and Y for this whole array!
+      this.lookupCell(y-1, x-1),
       this.lookupCell(y, x-1),
       this.lookupCell(y+1, x-1),
       this.lookupCell(y-1, x),
@@ -87,57 +103,47 @@ class conwayGrid {
     } 
 
     // The rules of Life:
-    if (neighbourCellsCount === 3) {
-      return true;
-    }
-    if (currentCell === true && neighbourCellsCount === 2) {
-      return true;
-    }
-    return false;
+    return neighbourCellsCount === 3 || (currentCell && neighbourCellsCount === 2);
   }
 
-  lookupCell(x, y) {
-    try {
-      return this.currentValues[y][x];
-    } catch(e) {
-      return false;
-    }
+  lookupCell(y, x) {
+    if (y < 0 || x < 0 || y >= this.gridHeight || x >= this.gridWidth) return false;
+    return this.currentGridArray[y][x];
   }
 
   updateGrid(gridArray) {
     let cellCount = 0;
-    for (let y = 0; y < this.gridHeight; y++) {
-      for (let x = 0; x < this.gridWidth; x++) {
+    for (let y = 0; y < this.gridWidth; y++) {
+      for (let x = 0; x < this.gridHeight; x++) {
         const cell = document.getElementById(`cb_${cellCount}`);
         this.changeCellColor(cell);
-        if (gridArray[y][x] === true) {
-          cell.checked = true;
-        } else {
-          cell.checked = false;
-        }
+        cell.checked = gridArray[y][x];
         cellCount++;
       }
     }
   }
 
   changeCellColor(cell) {
-    const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow'];
+    const colors = ['magenta', 'green', 'purple', 'darkblue', 'violet', 'cyan', 'yellow']
     const newColor = colors[Math.floor(Math.random() * colors.length)];
-    for (let i = 0; i < colors.length; i++) {
-      cell.className = newColor;
-    }
+    cell.className = newColor;
   }
 
   play() {
-    domStartButton.style.display = 'none';
+    this.runState = true;
+    domStartButton.style.display = 'none'; // TODO: Replace with a .hidden class
     domStartOverButton.style.display = 'none';
     domPauseButton.style.display = 'unset';
+    this.runLoop();
+  }
+
+  runLoop() {
     setTimeout(() => {
-      const nextGrid = this.calcNextGrid();
+      this.readCurrentGrid();
+      const nextGrid = this.calcNextGrid(this.currentGridArray);
       this.updateGrid(nextGrid);
-      this.currentValues = nextGrid;
-      if (this.runState === true) this.play(); // TODO: Find a more elegant loop to use
-    }, 333); 
+      if (this.runState === true) this.play(); // TODO: Explore if this could be a while loop
+    }, this.cycleTime); 
   }
 
   pause() {
@@ -155,12 +161,12 @@ class conwayGrid {
   }
 }
 
-// Initialision Form:
-
 domStartForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Stop page refreshing
   const gridWidth = domWidthField.value;
   const gridHeight = domHeightField.value;
   const startTruePercent = domPercentageField.value;
   let playGrid = new conwayGrid(gridWidth, gridHeight, startTruePercent);
 });
+
+// TODO: Find out why the play loop sometimes breaks when paused and restarted, and stop that from happening.
