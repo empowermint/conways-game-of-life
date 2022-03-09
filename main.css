@@ -34,7 +34,7 @@
 *::after {
   font-family: Orbitron, sans-serif;
   font-size: 1.2rem;
-  line-height: calc(1rem + 1em);
+  line-height: 1.1em;
   color: white;
   text-align: center;
 }
@@ -42,7 +42,7 @@
 h1 {
   font-size: calc(1rem + 5vw);
   width: 9ch;
-  margin: auto;
+  margin: 0 auto;
   font-family: Monoton, sans-serif;
   color: rgba(0 0 0 / 0);
   background: radial-gradient(ellipse, hsl(330 90% 50%),
@@ -54,6 +54,7 @@ h1 {
 }
 
 p {
+  margin-top: 2.5vw;
   font-size: 1rem;
 }
 
@@ -87,6 +88,7 @@ body {
                                       hsl(0 0% 12%));
   min-height: 100vh;
   padding: var(--base-margin);
+  padding-top: 4vw;
   gap: var(--base-margin);
 }
 
@@ -95,7 +97,12 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   gap: var(--base-margin);
+}
+
+#grid-area {
+  width: clamp(10rem, 50rem, 90vw);
 }
 
 #control-area {
@@ -129,11 +136,12 @@ button {
   background: hsl(0 0% 90%);
   color: black;
   font-weight: 900;
-  width: 8ch;
+  width: calc(8ch + 1vw);
   border-radius: .3rem;
   transition: ease-out 0.2s;
   grid-column: 1 / -1;
   place-self: center;
+  padding: 1vw;
 }
 
 button:hover {
@@ -144,7 +152,6 @@ button:hover {
 /* Conway Grid */
 
 #grid-area {
-  max-width: 50rem;
   -webkit-perspective: 450px;
   perspective: 450px;
   -webkit-perspective-origin: 50% 50%;
@@ -154,6 +161,7 @@ button:hover {
 
 .conwaygrid {
   display: grid;
+  width: 100%;
   margin: 0 auto;
   grid-template-rows: auto; 
   gap: 5px;
