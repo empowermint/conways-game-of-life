@@ -129,19 +129,20 @@ label {
 
 input[type="number"] {
   border: solid white 1px;
-  width: 7ch;
+  width: min(calc(6ch + 1vw), 7ch);
+  padding: .5vw;
 }
 
 button {
   background: hsl(0 0% 90%);
   color: black;
   font-weight: 900;
-  width: calc(8ch + 1vw);
+  width: min(calc(8ch + 2vw), 9ch);
   border-radius: .3rem;
   transition: ease-out 0.2s;
   grid-column: 1 / -1;
   place-self: center;
-  padding: 1vw;
+  padding: min(1vw, .5rem);
 }
 
 button:hover {
